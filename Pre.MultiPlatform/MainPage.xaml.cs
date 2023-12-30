@@ -35,6 +35,8 @@ namespace Pre.MultiPlatform
                 if (fileResult != null)
                 {
                     _cloudStorageService.UploadFile("cloud-videos", fileResult.FullPath, "video/mp4");
+                    _videoList.Clear();
+                    LoadVideoList();
                 }
             }
             catch (Exception ex)

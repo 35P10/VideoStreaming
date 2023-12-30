@@ -3,15 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Pre.MultiPlatform.MainPage">
 
-    <StackLayout>
-        <Label Text="Lista de Videos" FontSize="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-        <Button Text="Subir Video" Clicked="OnSelectFileButtonClicked" HorizontalOptions="CenterAndExpand"/>
-        <ListView x:Name="VideoListView" ItemsSource="{Binding _videoList}" ItemTapped="OnVideoSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Text="{Binding}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+    <VerticalStackLayout>
+        <!-- Barra Superior con Título y Botón -->
+        <FlexLayout  Direction="Row" Margin="16">
+            <Label FlexLayout.Grow="1"  VerticalTextAlignment="Center" Text="CloudVideos" FontSize="24" TextColor="White"/>
+            <Button 
+                Text="Subir Video" 
+                Clicked="OnSelectFileButtonClicked" 
+                BackgroundColor="#4CAF50" 
+                TextColor="White"
+            />
+        </FlexLayout>
+
+        <!-- Contenido Principal - Lista de Videos -->
+        <StackLayout Grid.Row="1" Margin="10">
+            <ListView x:Name="VideoListView" ItemsSource="{Binding _videoList}" ItemTapped="OnVideoSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding}" TextColor="White" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </VerticalStackLayout>
 </ContentPage>

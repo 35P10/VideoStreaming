@@ -5,7 +5,6 @@
              x:Class="Pre.MultiPlatform.VideoPlaybackPage"
              Title="VideoPlaybackPage">
     <StackLayout>
-        <Label Text="Reproducción de Video" FontSize="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
         <toolkit:MediaElement x:Name="mediaElement" ShouldShowPlaybackControls="True" VerticalOptions="FillAndExpand"/>
     </StackLayout>
 </ContentPage>

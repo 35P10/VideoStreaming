@@ -19,4 +19,12 @@ public partial class VideoPlaybackPage : ContentPage
 
         mediaElement.Source = new Uri(_cloudStorageService.GetUrlResource(bucket,videoFilePath));
     }
+
+    protected override void OnDisappearing()
+    {
+        mediaElement.Stop();
+        mediaElement.Source = null;
+
+        base.OnDisappearing();
+    }
 }
