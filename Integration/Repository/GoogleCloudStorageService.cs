@@ -37,5 +37,20 @@ namespace Integration.Repository
                 Console.WriteLine($"Error al subir el archivo al bucket: {ex.Message}");
             }
         }
+
+        public IEnumerable<string> ListFiles(string bucketName)
+        {
+            var objects = _storageClient.ListObjects(bucketName);
+
+            foreach (var storageObject in objects)
+            {
+                yield return storageObject.Name;
+            }
+        }
+
+        public string GetUrlResource(string bucketName, string fileName)
+        {
+            return $"https://storage.googleapis.com/{bucketName}/{fileName}";
+        }
     }
 }

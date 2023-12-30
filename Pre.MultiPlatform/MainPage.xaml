@@ -4,8 +4,14 @@
              x:Class="Pre.MultiPlatform.MainPage">
 
     <StackLayout>
-        <Label Text="Subir Archivo" FontSize="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
-        <Button Text="Seleccionar Archivo" Clicked="OnSelectFileButtonClicked"/>
+        <Label Text="Lista de Videos" FontSize="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Button Text="Subir Video" Clicked="OnSelectFileButtonClicked" HorizontalOptions="CenterAndExpand"/>
+        <ListView x:Name="VideoListView" ItemsSource="{Binding _videoList}" ItemTapped="OnVideoSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
-
 </ContentPage>

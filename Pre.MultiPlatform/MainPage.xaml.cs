@@ -1,10 +1,12 @@
 ﻿using Core.App.Services;
+using System.Collections.ObjectModel;
 
 namespace Pre.MultiPlatform
 {
     public partial class MainPage : ContentPage
     {
         private ICloudStorageService _cloudStorageService;
+        private ObservableCollection<string> _videoList;
 
         public MainPage()
         {
@@ -14,6 +16,9 @@ namespace Pre.MultiPlatform
                         .Services  // IServiceProvider
                         .GetService<ICloudStorageService>();
             InitializeComponent();
+            _videoList = new ObservableCollection<string>();
+            VideoListView.ItemsSource = _videoList;
+            LoadVideoList();
         }
 
         private async void OnSelectFileButtonClicked(object sender, EventArgs e)
@@ -35,6 +40,24 @@ namespace Pre.MultiPlatform
             catch (Exception ex)
             {
                 Console.WriteLine($"Error al seleccionar o subir el archivo: {ex.Message}");
+            }
+        }
+
+        private void LoadVideoList()
+        {
+            var bucketName = "cloud-videos";
+            var videos = _cloudStorageService.ListFiles(bucketName);
+            foreach (var video in videos)
+            {
+                _videoList.Add(video);
+            }
+        }
+
+        private async void OnVideoSelected(object sender, ItemTappedEventArgs e)
+        {
+            if (e.Item is string selectedVideo)
+            {
+                await Navigation.PushAsync(new VideoPlaybackPage("cloud-videos", selectedVideo));
             }
         }
     }
