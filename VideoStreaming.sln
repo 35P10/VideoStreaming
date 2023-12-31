@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration", "Integration\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.App", "Core.App\Core.App.csproj", "{7B78DACA-0BDC-4422-86F1-B73579C54AF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pre.MultiPlatform", "Pre.MultiPlatform\Pre.MultiPlatform.csproj", "{24D6B39E-F923-4CE8-94AC-B7A975C23BE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pre.MultiPlatform", "Pre.MultiPlatform\Pre.MultiPlatform.csproj", "{24D6B39E-F923-4CE8-94AC-B7A975C23BE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{BAA11224-5FC9-4C68-9287-C0DC18772316}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{24D6B39E-F923-4CE8-94AC-B7A975C23BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24D6B39E-F923-4CE8-94AC-B7A975C23BE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24D6B39E-F923-4CE8-94AC-B7A975C23BE8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BAA11224-5FC9-4C68-9287-C0DC18772316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAA11224-5FC9-4C68-9287-C0DC18772316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAA11224-5FC9-4C68-9287-C0DC18772316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAA11224-5FC9-4C68-9287-C0DC18772316}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
