@@ -1,11 +1,12 @@
-﻿using Core.App.Services;
+﻿using Core.App.Models;
+using Core.App.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api")]
     public class CloudStorage : ControllerBase
     {
         private readonly ILogger<CloudStorage> _logger;
@@ -34,18 +35,7 @@ namespace WebApi.Controllers
                 _cloudStorageService.UploadFile(bucketName, fileName, contentType, stream);
             }
 
-            return Ok($"Video {fileName} uploaded successfully to the bucket {bucketName}");
-        }
-
-        [HttpGet("listVideos")]
-        public IActionResult ListVideos()
-        {
-            // Assuming 'cloud-videos' is your bucket name for videos
-            var bucketName = "cloud-videos";
-
-            var videoList = _cloudStorageService.ListFiles(bucketName);
-
-            return Ok(videoList);
+            return Ok($"Video {fileName} subido exitosamente al bucket {bucketName}");
         }
 
         [HttpGet("listVideoMetadata")]
@@ -60,7 +50,45 @@ namespace WebApi.Controllers
             {
                 _logger.LogError($"Error al procesar la solicitud: {ex.Message}");
 
-                return Ok(new { Success = false, ErrorMessage = "Error al procesar la solicitud. Consulta los registros para obtener más detalles." });
+                return Ok(new { Success = false, ErrorMessage = "Error al procesar la solicitud." });
+            }
+        }
+
+        [HttpGet("search")]
+        public IActionResult Search(string text)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(text))
+                {
+                    return BadRequest("El texto no puede estar vacío.");
+                }
+
+                var words = text.Split(' ');
+
+                HashSet<string> nombre_videos = new HashSet<string>();
+                foreach (var word in words)
+                {
+                    var queryvideos = _cloudStorageService.GetVideosByLabelAsync(word).Result;
+                    foreach (var video in queryvideos) {
+                        nombre_videos.Add(video);
+                    }
+                }
+
+                List<VideoMetadata> video_metadata = new List<VideoMetadata>();
+                foreach(var video in nombre_videos)
+                {
+                    var temp = _cloudStorageService.GetVideoMetadataByNameAsync(video).Result;
+                    if(temp != null) { video_metadata.Add(temp); }
+                }
+
+                return Ok(video_metadata);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al procesar la solicitud: {ex.Message}");
+
+                return Ok(new { Success = false, ErrorMessage = "Error al procesar la solicitud." });
             }
         }
     }

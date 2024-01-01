@@ -103,22 +103,68 @@ namespace Integration.Repository
             {
                 var snapshot = videoDoc.GetSnapshotAsync().Result;
                 var fields = snapshot.ToDictionary();
-
-                string _nombre = fields["nombre"].ToString();
-                string _MiniaturaUrl = fields["miniatura_url"].ToString();
-                string _VideoUrl = fields["video_url"].ToString();
-                var _Etiquetas = new List<string> { "Prueba 1", "Prueba 2" };
-
                 var videoMetadata = new VideoMetadata {
-                    Nombre = _nombre,
-                    MiniaturaUrl = _MiniaturaUrl,
-                    Etiquetas = _Etiquetas,
-                    VideoUrl = _VideoUrl
+                    Nombre = fields["nombre"].ToString(),
+                    MiniaturaUrl = fields["miniatura_url"].ToString(),
+                    Etiquetas = new List<string> { "Prueba 1", "Prueba 2" },
+                    VideoUrl = fields["video_url"].ToString()
                 };
-
                 res.Add(videoMetadata);
             }
             return res;
+        }
+
+        public async Task<List<string>> GetVideosByLabelAsync(string label)
+        {
+            try
+            {
+                List<string> videos = new List<string>();
+                var etiquetasCollection = _firestoreDb.Collection("etiquetas");
+                var query = etiquetasCollection.Document(label);
+                if(query != null)
+                {
+                    var snapshot = await query.GetSnapshotAsync();
+                    var fields = snapshot.ToDictionary();
+                    foreach(var field  in fields)
+                    {
+                        videos.Add(field.Key.ToString());
+                    }
+                }
+                return videos;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al buscar etiqueta: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<VideoMetadata?> GetVideoMetadataByNameAsync(string names)
+        {
+            try
+            {
+                var etiquetasCollection = _firestoreDb.Collection("videos");
+                var query = etiquetasCollection.Document(names);
+                if (query != null)
+                {
+                    var snapshot = await query.GetSnapshotAsync();
+                    var fields = snapshot.ToDictionary();
+                    var videoMetadata = new VideoMetadata
+                    {
+                        Nombre = fields["nombre"].ToString(),
+                        MiniaturaUrl = fields["miniatura_url"].ToString(),
+                        Etiquetas = new List<string> { "Prueba 1", "Prueba 2" },
+                        VideoUrl = fields["video_url"].ToString()
+                    };
+                    return videoMetadata;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al buscar video: {ex.Message}");
+                throw;
+            }
         }
     }
 }

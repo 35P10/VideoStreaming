@@ -9,5 +9,7 @@ namespace Core.App.Services
         IEnumerable<string> ListFiles(string bucketName);
         string GetUrlResource(string bucketName, string fileName);
         Task<IEnumerable<VideoMetadata>> ListVideoMetadataAsync();
+        Task<List<string>> GetVideosByLabelAsync(string label);
+        Task<VideoMetadata?> GetVideoMetadataByNameAsync(string names);
     }
 }
