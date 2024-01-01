@@ -37,6 +37,17 @@ namespace WebApi.Controllers
 
             var fileName = ProcessVideoFileName(file.FileName);
 
+            int i = 1;
+            string newFile = fileName;
+            while(true)
+            {
+                if (_cloudStorageService.FileExistsInBucket(bucketName, newFile) == false) break;
+                newFile = fileName;
+                newFile += i.ToString();
+                i++;
+            }
+            fileName = newFile;
+
             using (var stream = file.OpenReadStream())
             {
                 _cloudStorageService.UploadFile(bucketName, fileName, contentType, stream);

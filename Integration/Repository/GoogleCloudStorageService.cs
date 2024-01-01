@@ -84,6 +84,22 @@ namespace Integration.Repository
             }
         }
 
+        public bool FileExistsInBucket(string bucketName, string fileName)
+        {
+            try
+            {
+                var objects = _storageClient.ListObjects(bucketName);
+
+                return objects.Any(storageObject => storageObject.Name == fileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al verificar la existencia del archivo en el bucket: {ex.Message}");
+                throw;
+            }
+        }
+
+
         public string GetUrlResource(string bucketName, string fileName)
         {
             return $"https://storage.googleapis.com/{bucketName}/{fileName}";
