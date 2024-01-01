@@ -24,6 +24,20 @@ Obtiene metadatos de todos los videos almacenados en el servicio de almacenamien
 
 **Respuestas:**
 - `200 OK`: La solicitud se procesó correctamente y se devuelven los metadatos de los videos.
+- `Response body`:
+```
+[
+  {
+    "etiquetas": [
+      "string",
+      "string"
+    ],
+    "miniaturaUrl": "string",
+    "nombre": "string",
+    "videoUrl": "string"
+  },
+]
+```
 - `400 Bad Request`: Error al procesar la solicitud.
 
 ### `GET /api/search/{text}`
@@ -36,12 +50,23 @@ Busca videos por etiquetas. Se procesa el texto de búsqueda para eliminar carac
 
 **Respuestas:**
 - `200 OK`: La búsqueda se realizó correctamente y se devuelven los metadatos de los videos encontrados.
+- `Response body`:
+```
+[
+  {
+    "etiquetas": [
+      "string",
+      "string"
+    ],
+    "miniaturaUrl": "string",
+    "nombre": "string",
+    "videoUrl": "string"
+  },
+]
+```
 - `400 Bad Request`: El texto de búsqueda está vacío.
 - `400 Bad Request`: Error al procesar la solicitud.
 
 **Notas adicionales:**
 - Se eliminan caracteres no alfanuméricos del texto de búsqueda.
 - Se convierte el texto de búsqueda a minúsculas.
-
-### Notas Generales
-- La API utiliza el bucket "cloud-videos" para almacenar los archivos de video.
