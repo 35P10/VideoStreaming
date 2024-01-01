@@ -16,12 +16,7 @@ namespace Integration.Repository
 
         public GoogleCloudStorageService()
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            var jsonKeyFilePath = "D:/Downloads/aprobadasperoaquecosto-6aebddcaa7e2.json";
+            var jsonKeyFilePath = "./credential.json";
             var projectId = "aprobadasperoaquecosto";
 
             try {
@@ -124,6 +119,7 @@ namespace Integration.Repository
                 if(query != null)
                 {
                     var snapshot = await query.GetSnapshotAsync();
+                    if (snapshot.Exists == false) return videos;
                     var fields = snapshot.ToDictionary();
                     foreach(var field  in fields)
                     {
@@ -148,6 +144,7 @@ namespace Integration.Repository
                 if (query != null)
                 {
                     var snapshot = await query.GetSnapshotAsync();
+                    if (snapshot.Exists == false) return null;
                     var fields = snapshot.ToDictionary();
                     var videoMetadata = new VideoMetadata
                     {

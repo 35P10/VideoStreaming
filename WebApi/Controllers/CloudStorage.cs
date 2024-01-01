@@ -18,7 +18,8 @@ namespace WebApi.Controllers
             _cloudStorageService = cloudStorageService;
         }
 
-        [HttpPost("uploadVideo")]
+        [HttpPost]
+        [Route("upload")]
         public IActionResult UploadVideo(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -26,9 +27,15 @@ namespace WebApi.Controllers
                 return BadRequest("Invalid file");
             }
 
+            if (!IsVideoFile(file))
+            {
+                return BadRequest("Formato de archivo invalido. Solo archivos de video son permitidos.");
+            }
+
             var bucketName = "cloud-videos";
             var contentType = file.ContentType;
-            var fileName = file.FileName;
+
+            var fileName = ProcessVideoFileName(file.FileName);
 
             using (var stream = file.OpenReadStream())
             {
@@ -38,7 +45,24 @@ namespace WebApi.Controllers
             return Ok($"Video {fileName} subido exitosamente al bucket {bucketName}");
         }
 
-        [HttpGet("listVideoMetadata")]
+        private bool IsVideoFile(IFormFile file)
+        {
+            var allowedVideoExtensions = new[] { ".mp4", ".avi", ".mkv", ".mov", ".wmv" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLower();
+            return allowedVideoExtensions.Contains(fileExtension);
+        }
+
+        private string ProcessVideoFileName(string originalFileName)
+        {
+            var processedFileName = Path.GetFileNameWithoutExtension(originalFileName);
+            processedFileName = new string(processedFileName
+                .Where(c => Char.IsLetterOrDigit(c))
+                .ToArray());
+            return processedFileName.ToLower();
+        }
+
+        [HttpGet]
+        [Route("getAllVideos")]
         public IActionResult ListVideoMetadata()
         {
             try
@@ -54,7 +78,8 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet("search")]
+        [HttpGet]
+        [Route("search/{text}")]
         public IActionResult Search(string text)
         {
             try
@@ -64,6 +89,8 @@ namespace WebApi.Controllers
                     return BadRequest("El texto no puede estar vacío.");
                 }
 
+                text = new string(text.Where(c => Char.IsLetter(c)).ToArray());
+                text = text.ToLower();
                 var words = text.Split(' ');
 
                 HashSet<string> nombre_videos = new HashSet<string>();

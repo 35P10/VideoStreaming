@@ -49,3 +49,6 @@ msbuild.wrn
 *.db
 *.db-shm
 *.db-wal
+
+# Cloud Service
+credential.json
