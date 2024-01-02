@@ -1,0 +1,22 @@
+﻿@page "/"
+@using Core.App.Models;
+@using Pre.MultiPlatform.Blazor.Integration;
+@using Pre.Multiplatform.Blazor.Components
+@inject VideoStreamingApiHandler VideoStreamingApiHandler;
+
+<div class="content">
+    @foreach (var video in _videoList)
+    {
+        <Pre.Multiplatform.Blazor.Components.CardVideo _video=@video />
+    }
+</div>
+
+@code
+{
+    private List<VideoMetadata> _videoList = new List<VideoMetadata>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _videoList = await VideoStreamingApiHandler.GetAllVideos();
+    }
+}

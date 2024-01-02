@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Components;
+@inject NavigationManager NavigationManager;
+@using Pre.MultiPlatform.Blazor.Integration;
+@inject VideoStreamingApiHandler VideoStreamingApiHandler;
+@using System.Net.Http.Headers;
+
+<nav>
+    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="oi oi-home" aria-hidden="true"></span>
+    </NavLink>
+    <div class="searchbar">
+        <InputText @bind-Value="searchQuery" />
+        <button @onclick="Search">
+            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+        </button>
+    </div>
+    <button @onclick="SubirVideo">
+        <span class="oi oi-plus" aria-hidden="true"></span>
+    </button>
+</nav>
+
+@code {
+    private string searchQuery;
+    private InputFile fileInput;
+
+    private void Search()
+    {
+        NavigationManager.NavigateTo($"/results/{searchQuery}");
+    }
+
+    private async Task SubirVideo()
+    {
+        FileResult fileResult = await FilePicker.PickAsync(new PickOptions
+            {
+                FileTypes = FilePickerFileType.Videos,
+                PickerTitle = "Seleccionar Video"
+            });
+
+        if (fileResult != null)
+        {
+            string filePath = fileResult.FullPath;
+            await VideoStreamingApiHandler.UploadFileAsync(filePath);
+        }
+    }
+}

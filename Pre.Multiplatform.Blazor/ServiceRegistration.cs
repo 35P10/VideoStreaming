@@ -1,7 +1,6 @@
-﻿
-using Pre.MultiPlatform.Integration;
-
-namespace Pre.MultiPlatform
+﻿using Microsoft.AspNetCore.Components;
+using Pre.MultiPlatform.Blazor.Integration;
+namespace Pre.Multiplatform.Blazor
 {
     public static class ServiceRegistration
     {

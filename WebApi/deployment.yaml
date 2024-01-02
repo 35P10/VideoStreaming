@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: us-central1-docker.pkg.dev/aprobadasperoaquecosto/videostreaming-repo/webapi@sha256:93c35cd12d276f750ace7cca5bf0c13d033d06e4337f51cafdb05ee8e3d512b4
+          image: us-central1-docker.pkg.dev/aprobadasperoaquecosto/videostreaming-repo/webapi
           ports:
             - containerPort: 8080
           env:

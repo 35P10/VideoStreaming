@@ -1,0 +1,18 @@
+.page {
+    position: relative;
+    flex-direction: column;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+main {
+    flex: 1;
+    overflow-x: hidden;
+    height: calc(100vh - 64px);
+    padding: 4px 8px;
+}
+
+.sidebar {
+    background-color: #ffffff;
+    height: 64px;
+}

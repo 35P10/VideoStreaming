@@ -1,0 +1,33 @@
+﻿.CardVideo {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+
+    img {
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100%;
+        max-height: 512px;
+    }
+}
+
+.tag-container {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    flex-wrap:wrap;
+
+    button
+    {
+        align-items: center;
+        color: white;
+        display: block;
+        background: #6f58c9;
+        padding: 4px 8px;
+        border-radius: 13px;
+    }
+}

@@ -1,22 +1,24 @@
-﻿using Core.App.Services;
+﻿using Core.App.Models;
+using Core.App.Services;
+using Pre.MultiPlatform.Integration;
 using System.Collections.ObjectModel;
 
 namespace Pre.MultiPlatform
 {
     public partial class MainPage : ContentPage
     {
-        private ICloudStorageService _cloudStorageService;
-        private ObservableCollection<string> _videoList;
+        private VideoStreamingApiHandler _videoStreamingApiHandler;
+        private ObservableCollection<VideoMetadata> _videoList;
 
         public MainPage()
         {
-            _cloudStorageService = Application.Current.MainPage
+            _videoStreamingApiHandler = Application.Current.MainPage
                         .Handler
                         .MauiContext
                         .Services  // IServiceProvider
-                        .GetService<ICloudStorageService>();
+                        .GetService<VideoStreamingApiHandler>();
             InitializeComponent();
-            _videoList = new ObservableCollection<string>();
+            _videoList = new ObservableCollection<VideoMetadata>();
             VideoListView.ItemsSource = _videoList;
             LoadVideoList();
         }
@@ -25,7 +27,6 @@ namespace Pre.MultiPlatform
         {
             try
             {
-                // Utilizar la API de Essentials para seleccionar un archivo
                 var fileResult = await FilePicker.PickAsync(new PickOptions
                 {
                     FileTypes = FilePickerFileType.Videos,
@@ -34,7 +35,6 @@ namespace Pre.MultiPlatform
 
                 if (fileResult != null)
                 {
-                    _cloudStorageService.UploadFile("cloud-videos", fileResult.FullPath, "video/mp4");
                     _videoList.Clear();
                     LoadVideoList();
                 }
@@ -47,11 +47,10 @@ namespace Pre.MultiPlatform
 
         private void LoadVideoList()
         {
-            var bucketName = "cloud-videos";
-            var videos = _cloudStorageService.ListFiles(bucketName);
-            foreach (var video in videos)
+            List<VideoMetadata> res = _videoStreamingApiHandler.GetAllVideos().Result;
+            foreach (VideoMetadata resItem in res)
             {
-                _videoList.Add(video);
+                _videoList.Add(resItem);
             }
         }
 

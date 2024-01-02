@@ -1,0 +1,36 @@
+﻿@using Core.App.Models;
+@using Pre.MultiPlatform.Blazor.Integration;
+@inject VideoStreamingApiHandler VideoStreamingApiHandler;
+@inject NavigationManager NavigationManager;
+
+<div class="CardVideo">
+    @if(Play == false){
+        <img src=@_video.MiniaturaUrl @onclick="ToggleVideo"/>
+    }
+    else {
+        <video controls="controls">
+        <source src="@_video.VideoUrl" type="video/mp4" />
+        </video>
+    }
+    <div class="tag-container">
+        @foreach (string tag in _video.Etiquetas)
+        {
+            <button @onclick="(() => Search(tag))">@tag</button>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public VideoMetadata _video { get; set; }
+    private bool Play = false;
+
+    private void Search(string searchQuery)
+    {
+        NavigationManager.NavigateTo($"/results/{searchQuery}");
+    }
+
+    private void ToggleVideo() {
+        Play = !Play;
+        StateHasChanged();
+    }
+}

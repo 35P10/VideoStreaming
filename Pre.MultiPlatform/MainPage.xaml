@@ -16,14 +16,21 @@
         </FlexLayout>
 
         <!-- Contenido Principal - Lista de Videos -->
-        <StackLayout Grid.Row="1" Margin="10">
+        <ScrollView Margin="20" Orientation="Both">
             <ListView x:Name="VideoListView" ItemsSource="{Binding _videoList}" ItemTapped="OnVideoSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding}" TextColor="White" />
+                        <ViewCell>
+                            <StackLayout WidthRequest="400" >
+                                <Image Source="{Binding MiniaturaUrl}" WidthRequest="360" HeightRequest="400" Aspect="Center"/>
+                                <Label Text="{Binding Nombre}" TextColor="White" FontAttributes="Bold" />
+                                <Label Text="{Binding Etiquetas, StringFormat='Etiquetas: {0}'}" TextColor="White" />
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </StackLayout>
+        </ScrollView>
+
     </VerticalStackLayout>
 </ContentPage>

@@ -1,0 +1,26 @@
+﻿@using Core.App.Models;
+@using Pre.MultiPlatform.Blazor.Integration;
+@inject VideoStreamingApiHandler VideoStreamingApiHandler;
+
+@page "/results/{query}"
+
+<div class="content">
+    <h3>Resultados de Búsqueda para "@Query"</h3>
+
+    @foreach (var video in searchResults)
+    {
+        <Pre.Multiplatform.Blazor.Components.CardVideo _video=@video />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Query { get; set; }
+
+    private List<VideoMetadata> searchResults = new List<VideoMetadata>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        searchResults = await VideoStreamingApiHandler.SearchAsync(Query);
+    }
+}
