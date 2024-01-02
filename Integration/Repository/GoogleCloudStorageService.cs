@@ -6,6 +6,8 @@ using Google.Cloud.Firestore.V1;
 using Google.Cloud.Storage.V1;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Integration.Repository
 {
@@ -114,15 +116,62 @@ namespace Integration.Repository
             {
                 var snapshot = videoDoc.GetSnapshotAsync().Result;
                 var fields = snapshot.ToDictionary();
+                List<object> _temp = (List<object>)fields["etiquetas"];
+                List<string> _temp2 = new List<string>();
+                foreach (var obj in _temp)
+                {
+                    _temp2.Add(obj.ToString());
+                }
                 var videoMetadata = new VideoMetadata {
                     Nombre = fields["nombre"].ToString(),
                     MiniaturaUrl = fields["miniatura_url"].ToString(),
-                    Etiquetas = new List<string> { "Prueba 1", "Prueba 2" },
+                    Etiquetas = _temp2,
                     VideoUrl = fields["video_url"].ToString()
                 };
                 res.Add(videoMetadata);
             }
             return res;
+        }
+
+        public async Task<IEnumerable<string>> GetAllLabels()
+        {
+            try
+            {
+                List<string> videos = new List<string>();
+                var etiquetasCollection = _firestoreDb.Collection("etiquetas");
+                var query = etiquetasCollection.ListDocumentsAsync();
+                await foreach (var item in query)
+                {
+                    videos.Add(item.Id.ToString());
+                }
+                return videos;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener etiquetas: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetLabels(int maxCount)
+        {
+            try
+            {
+                List<string> videos = new List<string>();
+                var etiquetasCollection = _firestoreDb.Collection("etiquetas");
+                Query query = etiquetasCollection.Limit(maxCount);
+                QuerySnapshot capitalQuerySnapshot = await query.GetSnapshotAsync();
+                foreach (DocumentSnapshot documentSnapshot in capitalQuerySnapshot.Documents)
+                {
+                    videos.Add(documentSnapshot.Id.ToString());
+                }
+                return videos;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al obtener etiquetas: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<string>> GetVideosByLabelAsync(string label)
@@ -162,11 +211,17 @@ namespace Integration.Repository
                     var snapshot = await query.GetSnapshotAsync();
                     if (snapshot.Exists == false) return null;
                     var fields = snapshot.ToDictionary();
+                    List<object> _temp = (List<object>)fields["etiquetas"];
+                    List<string> _temp2 = new List<string>();
+                    foreach (var obj in _temp)
+                    {
+                        _temp2.Add(obj.ToString());
+                    }
                     var videoMetadata = new VideoMetadata
                     {
                         Nombre = fields["nombre"].ToString(),
                         MiniaturaUrl = fields["miniatura_url"].ToString(),
-                        Etiquetas = new List<string> { "Prueba 1", "Prueba 2" },
+                        Etiquetas = _temp2,
                         VideoUrl = fields["video_url"].ToString()
                     };
                     return videoMetadata;

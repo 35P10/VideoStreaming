@@ -90,19 +90,53 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("search/{text}")]
-        public IActionResult Search(string text)
+        [Route("getAllLabels")]
+        public IActionResult ListLabels()
         {
             try
             {
-                if (string.IsNullOrEmpty(text))
+                var videos = _cloudStorageService.GetAllLabels().Result;
+                return Ok(videos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al procesar la solicitud: {ex.Message}");
+
+                return Ok(new { Success = false, ErrorMessage = "Error al procesar la solicitud." });
+            }
+        }
+
+        [HttpGet]
+        [Route("getLabels/{number}")]
+        public IActionResult ListLabelsLimitTo(int number)
+        {
+            try
+            {
+                var videos = _cloudStorageService.GetLabels(number).Result;
+                return Ok(videos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error al procesar la solicitud: {ex.Message}");
+
+                return Ok(new { Success = false, ErrorMessage = "Error al procesar la solicitud." });
+            }
+        }
+
+        [HttpGet]
+        [Route("search/{query}")]
+        public IActionResult Search(string query)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(query))
                 {
                     return BadRequest("El texto no puede estar vacío.");
                 }
 
-                text = new string(text.Where(c => Char.IsLetter(c)).ToArray());
-                text = text.ToLower();
-                var words = text.Split(' ');
+                query = new string(query.Where(c => Char.IsLetter(c)).ToArray());
+                query = query.ToLower();
+                var words = query.Split(' ');
 
                 HashSet<string> nombre_videos = new HashSet<string>();
                 foreach (var word in words)

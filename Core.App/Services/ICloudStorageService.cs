@@ -12,5 +12,7 @@ namespace Core.App.Services
         Task<IEnumerable<VideoMetadata>> ListVideoMetadataAsync();
         Task<List<string>> GetVideosByLabelAsync(string label);
         Task<VideoMetadata?> GetVideoMetadataByNameAsync(string names);
+        Task<IEnumerable<string>> GetAllLabels();
+        Task<IEnumerable<string>> GetLabels(int number);
     }
 }
