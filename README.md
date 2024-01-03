@@ -70,3 +70,52 @@ Busca videos por etiquetas. Se procesa el texto de búsqueda para eliminar carac
 **Notas adicionales:**
 - Se eliminan caracteres no alfanuméricos del texto de búsqueda.
 - Se convierte el texto de búsqueda a minúsculas.
+
+
+### `GET /api/getAllLabels`
+**Descripción:** Obtiene todas las etiquetas del almacenamiento en la nube.
+
+**Parámetros de entrada:** Ninguno
+
+**Respuestas:**
+  - Código 200 OK
+    ```json
+    [
+        "Etiqueta1",
+        "Etiqueta2",
+        "Etiqueta3"
+    ]
+    ```
+  - Código de error
+    ```json
+    {
+        "Success": false,
+        "ErrorMessage": "Error al procesar la solicitud."
+    }
+    ```
+- **Notas adicionales:** Este endpoint devuelve todas las etiquetas disponibles en el almacenamiento en la nube.
+
+### `GET /api/getLabels/{number}`
+**Descripción:** Obtiene un número específico de etiquetas del almacenamiento en la nube.
+
+**Parámetros de entrada:**
+  - `{number}` (parámetro de ruta): El número de etiquetas a recuperar.
+
+**Respuestas:**
+  - Código 200 OK
+    ```json
+    [
+        "Etiqueta1",
+        "Etiqueta2",
+        "Etiqueta3",
+        "Etiqueta4",
+        "Etiqueta5"
+    ]
+    ```
+  - Código de error
+    ```json
+    {
+        "Success": false,
+        "ErrorMessage": "Error al procesar la solicitud."
+    }
+    ```

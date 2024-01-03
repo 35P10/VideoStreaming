@@ -77,7 +77,7 @@ namespace Pre.MultiPlatform.Blazor.Integration
             return res;
         }
 
-        public async Task UploadFileAsync(string filePath)
+        public async Task<bool> UploadFileAsync(string filePath)
         {
             using (var httpClient = new HttpClient())
             {
@@ -98,11 +98,11 @@ namespace Pre.MultiPlatform.Blazor.Integration
 
                         if (response.IsSuccessStatusCode)
                         {
-                            Console.WriteLine("Archivo subido exitosamente.");
+                            return true;
                         }
                         else
                         {
-                            Console.WriteLine($"Error al subir el archivo. Código de estado: {response.StatusCode}");
+                            return false;
                         }
                     }
                 }

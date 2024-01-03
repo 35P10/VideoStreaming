@@ -8,7 +8,7 @@
         <img src=@_video.MiniaturaUrl @onclick="ToggleVideo"/>
     }
     else {
-        <video controls="controls">
+        <video controls="controls" @onended="OnVideoEnded">
         <source src="@_video.VideoUrl" type="video/mp4" />
         </video>
     }
@@ -31,6 +31,12 @@
 
     private void ToggleVideo() {
         Play = !Play;
+        StateHasChanged();
+    }
+
+    private void OnVideoEnded()
+    {
+        Play = false;
         StateHasChanged();
     }
 }

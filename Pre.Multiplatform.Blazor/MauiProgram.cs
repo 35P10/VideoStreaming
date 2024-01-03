@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Pre.Multiplatform.Blazor.Data;
 
 namespace Pre.Multiplatform.Blazor
 {
@@ -22,7 +21,6 @@ namespace Pre.Multiplatform.Blazor
 		builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddServices();
             return builder.Build();
         }

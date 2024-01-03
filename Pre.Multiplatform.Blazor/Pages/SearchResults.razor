@@ -7,9 +7,17 @@
 <div class="content">
     <h3>Resultados de Búsqueda para "@Query"</h3>
 
-    @foreach (var video in searchResults)
+    @if(searchResults.Count == 0)
     {
-        <Pre.Multiplatform.Blazor.Components.CardVideo _video=@video />
+        <p role="alert">No hay resultados</p>
+        <img src="https://i.gifer.com/XOsX.gif" width="256" alt="pato caminando chido" />
+    }
+    else
+    {
+        @foreach (var video in searchResults)
+        {
+            <Pre.Multiplatform.Blazor.Components.CardVideo _video=@video />
+        }        
     }
 </div>
 

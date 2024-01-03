@@ -9,19 +9,36 @@
         <span class="oi oi-home" aria-hidden="true"></span>
     </NavLink>
     <div class="searchbar">
-        <InputText @bind-Value="searchQuery" />
+        <InputText class="searchinput" @bind-Value="searchQuery" style="flex: 1; max-width: 50vw"/>
         <button @onclick="Search">
             <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
         </button>
     </div>
     <button @onclick="SubirVideo">
-        <span class="oi oi-plus" aria-hidden="true"></span>
+        @switch (uploadStatus)
+        {
+            case 1:
+                <span class="oi oi-data-transfer-upload" aria-hidden="true"></span>
+                break;
+            case 2:
+                <span class="oi oi-check" aria-hidden="true"></span>
+                break;
+            case 3:
+                <span class="oi oi-x" aria-hidden="true"></span>
+                break;
+            case 4:
+                <span class="oi oi-ellipses" aria-hidden="true"></span>
+                break;
+            default:
+                <span class="oi oi-data-transfer-upload" aria-hidden="true"></span>
+                break;
+        }
     </button>
 </nav>
 
 @code {
     private string searchQuery;
-    private InputFile fileInput;
+    int uploadStatus = 1;
 
     private void Search()
     {
@@ -38,8 +55,23 @@
 
         if (fileResult != null)
         {
+            uploadStatus = 4;
+            StateHasChanged();
             string filePath = fileResult.FullPath;
-            await VideoStreamingApiHandler.UploadFileAsync(filePath);
+            bool res = await VideoStreamingApiHandler.UploadFileAsync(filePath);
+            if(res)
+            {
+                uploadStatus = 2;
+            }
+            else
+            {
+                uploadStatus = 3;
+            }
+            StateHasChanged();
         }
+
+        await Task.Delay(2000);
+        uploadStatus = 1;
+        StateHasChanged();
     }
 }
