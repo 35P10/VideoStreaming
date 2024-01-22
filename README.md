@@ -2,8 +2,7 @@
 
 ## Descripción
 
-Este proyecto se centra en el desarrollo de un servicio de streaming de video en la nube mediante Google Cloud Platform, automatizando la carga, análisis y indexación de videos. Aprovechando las funciones de Google Cloud, el sistema procesa los videos cargados por los usuarios, detecta objetos y asigna etiquetas relevantes. Estas etiquetas, junto con las URLs del video y sus miniaturas, se almacenan eficientemente en Firestore. El pipeline utiliza tecnologías de visión por computadora y almacenamiento en la nube para gestionar contenido de video a gran escala.
-
+Servicio de streaming de video en la nube mediante Google Cloud Platform, automatizando la carga, análisis y indexación de videos. Aprovechando las funciones de Google Cloud, el sistema procesa los videos cargados por los usuarios, detecta objetos y asigna etiquetas relevantes. Estas etiquetas, junto con las URLs del video y sus miniaturas, se almacenan en Firestore. 
 
 <img src="Resources/pipeline.png" width="60%">
 
@@ -15,7 +14,7 @@ Este proyecto se centra en el desarrollo de un servicio de streaming de video en
 
 ### Firestore
 - Metadata: Incluye etiquetas, nombre del video, URL de miniatura y enlace al video.
-- Labels: Indice invertido clave[etiqueta]:ky[List[videos]] 
+- Labels: Indice invertido key[etiqueta]:value[List[videos]] 
 
 <img src="Resources/firestore.png" width="60%">
 
