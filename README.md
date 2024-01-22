@@ -1,3 +1,38 @@
+# Servicio de Streaming de Video en la Nube con Google Cloud Platform y YOLO
+
+## Descripción
+
+Este proyecto se centra en el desarrollo de un servicio de streaming de video en la nube mediante Google Cloud Platform, automatizando la carga, análisis y indexación de videos. Aprovechando las funciones de Google Cloud, el sistema procesa los videos cargados por los usuarios, detecta objetos y asigna etiquetas relevantes. Estas etiquetas, junto con las URLs del video y sus miniaturas, se almacenan eficientemente en Firestore. El pipeline utiliza tecnologías de visión por computadora y almacenamiento en la nube para gestionar contenido de video a gran escala.
+
+
+<img src="Resources/pipeline.png" width="60%">
+
+### Buckets
+
+- Cloud-videos: Se almacenan los videos de entrada.
+- Cloud-imagenes: Almacena miniaturas para mejorar la experiencia de búsqueda.
+- Yolov4model: Contiene los modelos YOLO y configuraciones.
+
+### Firestore
+- Metadata: Incluye etiquetas, nombre del video, URL de miniatura y enlace al video.
+- Labels: Indice invertido clave[etiqueta]:ky[List[videos]] 
+
+<img src="Resources/firestore.png" width="60%">
+
+### Procesamiento de Video
+Los usuarios cargan videos a través de la aplicación, desencadenando una función en Cloud Storage que inicia el pipeline de procesamiento.
+
+- Obtención de archivos necesarios para YOLO desde Yolov4model.
+- Captura del primer fotograma para representación visual rápida.
+- Subida de la miniatura a cloud-imagenes para acceso y visualización.
+- Inicialización del modelo YOLO y procesamiento de video fotograma por fotograma.
+- Obtención de etiquetas.
+- Guardar metadata en Metadata.
+- Indexar video en Labels.
+
+## Mobile App 
+
+<img src="Resources/mobile.jpg" height="340px">
 
 ## WebApi
 
